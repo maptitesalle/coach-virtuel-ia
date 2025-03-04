@@ -130,4 +130,70 @@
         <label>Milieu du corps :
           <input type="number" name="forceMilieu" placeholder="Ex: 40" />
         </label>
- 
+        <label>Bas du corps :
+          <input type="number" name="forceBas" placeholder="Ex: 30" />
+        </label>
+      </fieldset>
+
+      <!-- Section Flexibilité -->
+      <fieldset>
+        <legend>Âge biologique de la flexibilité</legend>
+        <label>Cou :
+          <input type="number" name="flexCou" />
+        </label>
+        <label>Épaules :
+          <input type="number" name="flexEpaules" />
+        </label>
+        <label>Lombaires :
+          <input type="number" name="flexLombaires" />
+        </label>
+        <label>Ischios :
+          <input type="number" name="flexIschios" />
+        </label>
+        <label>Hanches :
+          <input type="number" name="flexHanches" />
+        </label>
+      </fieldset>
+
+      <!-- Section Métabolique -->
+      <fieldset>
+        <legend>Âge biologique métabolique</legend>
+        <label>Poids (kg):
+          <input type="number" step="0.1" name="poids" />
+        </label>
+        <label>% Masse graisseuse :
+          <input type="number" step="0.1" name="masseGrasse" />
+        </label>
+        <label>% Masse musculaire :
+          <input type="number" step="0.1" name="masseMuscu" />
+        </label>
+        <label>Âge métabolique :
+          <input type="number" name="ageMetabo" />
+        </label>
+      </fieldset>
+
+      <!-- Section Cardio -->
+      <fieldset>
+        <legend>Âge cardio</legend>
+        <label>VO2max :
+          <input type="number" step="0.1" name="vo2max" />
+        </label>
+        <label>Âge cardio :
+          <input type="number" name="ageCardio" />
+        </label>
+      </fieldset>
+
+      <button type="button" id="submitBtn">Obtenir un conseil IA</button>
+    </form>
+
+    <div id="response"></div>
+  </div>
+
+  <footer>
+    © 2025 - Ma P'tite Salle
+  </footer>
+
+  <!-- Script JS à la fin pour charger après la page -->
+  <script src="script.js"></script>
+</body>
+</html>
