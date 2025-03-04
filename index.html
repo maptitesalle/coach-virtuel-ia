@@ -1,14 +1,133 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Coach Virtuel IA</title>
+  <meta charset="UTF-8" />
+  <title>Coach Virtuel IA - Ma P'tite Salle</title>
+
+  <!-- Exemple de style "warm/cosy" -->
+  <style>
+    /* ----- RESET SIMPLE ----- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #fdf7f3; /* Fond très léger, ton chaud */
+      color: #3e2e29; /* Couleur de texte brun-grisé pour le confort de lecture */
+      margin: 0;
+      padding: 0 1em 2em;
+    }
+
+    header {
+      background-color: #ed7e22; /* Couleur chaude (orange) */
+      padding: 1em;
+      text-align: center;
+      margin-bottom: 1.5em;
+    }
+    header h1 {
+      color: #fff;
+      font-size: 1.8em;
+      font-weight: normal;
+    }
+
+    /* ----- CONTENEUR PRINCIPAL ----- */
+    .container {
+      max-width: 650px;
+      margin: 0 auto;
+      background-color: #fff8f2; /* Légère nuance de blanc cassé */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      padding: 1.5em;
+    }
+
+    .container h2 {
+      margin-bottom: 1em;
+      color: #ed7e22;
+    }
+
+    form fieldset {
+      border: 1px solid #ebebeb;
+      border-radius: 5px;
+      margin-bottom: 1.5em;
+      padding: 1em;
+      background-color: #fff;
+    }
+
+    form legend {
+      padding: 0.2em 0.6em;
+      font-weight: bold;
+      color: #ed7e22;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 0.5em;
+      font-size: 0.95em;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 0.4em;
+      font-size: 0.9em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* Bouton pour envoyer le formulaire */
+    #submitBtn {
+      background-color: #ed7e22;
+      color: #fff;
+      border: none;
+      padding: 0.7em 1.2em;
+      font-size: 1em;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 0.5em;
+    }
+
+    #submitBtn:hover {
+      background-color: #da711f;
+    }
+
+    #response {
+      margin-top: 1em;
+      background: #fff6ed;
+      padding: 1em;
+      border-radius: 6px;
+      min-height: 50px;
+    }
+
+    /* Pied de page simple */
+    footer {
+      text-align: center;
+      font-size: 0.8em;
+      color: #aaaaaa;
+      margin-top: 2em;
+    }
+  </style>
 </head>
+
 <body>
+  <!-- En-tête -->
+  <header>
+    <h1>Ma P'tite Salle - Coach Virtuel IA</h1>
+  </header>
 
-  <h1>Coach Virtuel IA</h1>
-  <p>Ceci est notre page d'accueil</p>
+  <div class="container">
+    <h2>Formulaire d'Âges Biologiques</h2>
 
-  <script src="script.js"></script>
-</body>
-</html>
+    <form id="ageForm">
+      <!-- Section Force -->
+      <fieldset>
+        <legend>Âge biologique de la force</legend>
+        <label>Haut du corps :
+          <input type="number" name="forceHaut" placeholder="Ex: 35" />
+        </label>
+        <label>Milieu du corps :
+          <input type="number" name="forceMilieu" placeholder="Ex: 40" />
+        </label>
+ 
