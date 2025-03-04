@@ -1,137 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>Coach Virtuel IA - Ma P'tite Salle</title>
-
-  <!-- Exemple de style "warm/cosy" -->
+  <meta charset="UTF-8">
+  <title>Ma P’tite Salle - Coach Virtuel IA</title>
   <style>
-    /* ----- RESET SIMPLE ----- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    /* ----- Style basique, couleurs chaudes ----- */
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background-color: #fdf7f3; /* Fond très léger, ton chaud */
-      color: #3e2e29; /* Couleur de texte brun-grisé pour le confort de lecture */
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fdf7f3;
+      margin: 0; 
       padding: 0 1em 2em;
     }
-
     header {
-      background-color: #ed7e22; /* Couleur chaude (orange) */
-      padding: 1em;
-      text-align: center;
-      margin-bottom: 1.5em;
+      background-color: #ed7e22;
+      color: #fff; 
+      padding: 1em; 
+      text-align: center; 
+      margin-bottom: 1em;
     }
-    header h1 {
-      color: #fff;
-      font-size: 1.8em;
-      font-weight: normal;
-    }
-
-    /* ----- CONTENEUR PRINCIPAL ----- */
     .container {
-      max-width: 650px;
+      max-width: 600px;
       margin: 0 auto;
-      background-color: #fff8f2; /* Légère nuance de blanc cassé */
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      background: #fff8f2;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
       border-radius: 8px;
       padding: 1.5em;
     }
-
-    .container h2 {
-      margin-bottom: 1em;
-      color: #ed7e22;
-    }
-
-    form fieldset {
-      border: 1px solid #ebebeb;
-      border-radius: 5px;
-      margin-bottom: 1.5em;
+    fieldset { 
+      border: 1px solid #ebebeb; 
+      border-radius: 5px; 
+      margin-bottom: 1.5em; 
       padding: 1em;
       background-color: #fff;
     }
-
-    form legend {
-      padding: 0.2em 0.6em;
-      font-weight: bold;
+    legend {
       color: #ed7e22;
+      font-weight: bold;
+      padding: 0.2em 0.6em;
     }
-
-    form label {
-      display: block;
-      margin-bottom: 0.5em;
-      font-size: 0.95em;
-    }
-
+    label { display: block; margin: 0.5em 0; }
     input[type="number"] {
-      width: 100%;
-      padding: 0.4em;
-      font-size: 0.9em;
-      border: 1px solid #ccc;
+      width: 100%; 
+      padding: 0.4em; 
+      margin-bottom: 0.5em;
       border-radius: 4px;
+      border: 1px solid #ccc;
     }
-
-    /* Bouton pour envoyer le formulaire */
-    #submitBtn {
+    button {
       background-color: #ed7e22;
       color: #fff;
       border: none;
-      padding: 0.7em 1.2em;
+      padding: 0.6em 1.2em;
       font-size: 1em;
       border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.3s ease;
-      margin-top: 0.5em;
     }
-
-    #submitBtn:hover {
+    button:hover {
       background-color: #da711f;
     }
-
     #response {
-      margin-top: 1em;
-      background: #fff6ed;
-      padding: 1em;
+      margin-top: 1em; 
+      padding: 1em; 
+      background: #fff6ed; 
       border-radius: 6px;
       min-height: 50px;
     }
-
-    /* Pied de page simple */
     footer {
-      text-align: center;
-      font-size: 0.8em;
+      margin-top: 2em; 
+      text-align: center; 
+      font-size: 0.8em; 
       color: #aaaaaa;
-      margin-top: 2em;
     }
   </style>
 </head>
 
 <body>
-  <!-- En-tête -->
   <header>
-    <h1>Ma P'tite Salle - Coach Virtuel IA</h1>
+    <h1>Ma P’tite Salle - Coach Virtuel IA</h1>
   </header>
 
   <div class="container">
     <h2>Formulaire d'Âges Biologiques</h2>
-
     <form id="ageForm">
       <!-- Section Force -->
       <fieldset>
         <legend>Âge biologique de la force</legend>
         <label>Haut du corps :
-          <input type="number" name="forceHaut" placeholder="Ex: 35" />
+          <input type="number" name="forceHaut" placeholder="Ex: 35">
         </label>
         <label>Milieu du corps :
-          <input type="number" name="forceMilieu" placeholder="Ex: 40" />
+          <input type="number" name="forceMilieu" placeholder="Ex: 40">
         </label>
         <label>Bas du corps :
-          <input type="number" name="forceBas" placeholder="Ex: 30" />
+          <input type="number" name="forceBas" placeholder="Ex: 30">
         </label>
       </fieldset>
 
@@ -139,19 +101,19 @@
       <fieldset>
         <legend>Âge biologique de la flexibilité</legend>
         <label>Cou :
-          <input type="number" name="flexCou" />
+          <input type="number" name="flexCou">
         </label>
         <label>Épaules :
-          <input type="number" name="flexEpaules" />
+          <input type="number" name="flexEpaules">
         </label>
         <label>Lombaires :
-          <input type="number" name="flexLombaires" />
+          <input type="number" name="flexLombaires">
         </label>
         <label>Ischios :
-          <input type="number" name="flexIschios" />
+          <input type="number" name="flexIschios">
         </label>
         <label>Hanches :
-          <input type="number" name="flexHanches" />
+          <input type="number" name="flexHanches">
         </label>
       </fieldset>
 
@@ -159,16 +121,16 @@
       <fieldset>
         <legend>Âge biologique métabolique</legend>
         <label>Poids (kg):
-          <input type="number" step="0.1" name="poids" />
+          <input type="number" step="0.1" name="poids">
         </label>
         <label>% Masse graisseuse :
-          <input type="number" step="0.1" name="masseGrasse" />
+          <input type="number" step="0.1" name="masseGrasse">
         </label>
         <label>% Masse musculaire :
-          <input type="number" step="0.1" name="masseMuscu" />
+          <input type="number" step="0.1" name="masseMuscu">
         </label>
         <label>Âge métabolique :
-          <input type="number" name="ageMetabo" />
+          <input type="number" name="ageMetabo">
         </label>
       </fieldset>
 
@@ -176,10 +138,10 @@
       <fieldset>
         <legend>Âge cardio</legend>
         <label>VO2max :
-          <input type="number" step="0.1" name="vo2max" />
+          <input type="number" step="0.1" name="vo2max">
         </label>
         <label>Âge cardio :
-          <input type="number" name="ageCardio" />
+          <input type="number" name="ageCardio">
         </label>
       </fieldset>
 
@@ -193,7 +155,45 @@
     © 2025 - Ma P'tite Salle
   </footer>
 
-  <!-- Script JS à la fin pour charger après la page -->
-  <script src="script.js"></script>
+  <!-- Script JS intégré directement ci-dessous -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('ageForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const responseDiv = document.getElementById('response');
+
+    submitBtn.addEventListener('click', () => {
+      // 1. Récupérer les données du formulaire
+      const formData = new FormData(form);
+      const data = {
+        forceHaut: formData.get('forceHaut'),
+        forceMilieu: formData.get('forceMilieu'),
+        forceBas: formData.get('forceBas'),
+        flexCou: formData.get('flexCou'),
+        flexEpaules: formData.get('flexEpaules'),
+        flexLombaires: formData.get('flexLombaires'),
+        flexIschios: formData.get('flexIschios'),
+        flexHanches: formData.get('flexHanches'),
+        poids: formData.get('poids'),
+        masseGrasse: formData.get('masseGrasse'),
+        masseMuscu: formData.get('masseMuscu'),
+        ageMetabo: formData.get('ageMetabo'),
+        vo2max: formData.get('vo2max'),
+        ageCardio: formData.get('ageCardio')
+      };
+
+      // 2. Afficher en console pour debug
+      console.log("Data saisie:", data);
+
+      // 3. Juste un message sur la page (test local)
+      responseDiv.innerHTML = `
+        <h3>Test de soumission :</h3>
+        <p>J'ai bien reçu les données !</p>
+        <pre>${JSON.stringify(data, null, 2)}</pre>
+      `;
+    });
+  });
+  </script>
+
 </body>
 </html>
