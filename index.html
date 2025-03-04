@@ -2,6 +2,18 @@
 <html lang="fr">
 <head>
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<button onClick="netlifyIdentity.open()">Se connecter / Créer un compte</button>
+<script>
+  if (window.netlifyIdentity) {
+    window.netlifyIdentity.on("init", user => {
+      if (!user) {
+        window.netlifyIdentity.on("login", () => {
+          document.location.reload();
+        });
+      }
+    });
+  }
+</script>
 
   <meta charset="UTF-8" />
   <title>Ma P’tite Salle - Coach Virtuel IA</title>
