@@ -4,134 +4,7 @@
   <meta charset="UTF-8" />
   <title>Ma P’tite Salle - Coach Virtuel IA</title>
   <style>
-    /* ---------------------- RESET & BASE ---------------------- */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fdf7f3;
-      margin: 0;
-      padding: 0 1em 2em;
-    }
-    header {
-      background-color: #ed7e22;
-      color: #fff;
-      padding: 1em;
-      text-align: center;
-      margin-bottom: 1em;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff8f2;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      border-radius: 8px;
-      padding: 1.5em;
-    }
-    h1, h2 {
-      margin-bottom: 0.5em;
-      color: #ed7e22;
-    }
-    fieldset {
-      border: 1px solid #ebebeb;
-      border-radius: 5px;
-      margin-bottom: 1.5em;
-      padding: 1em;
-      background-color: #fff;
-    }
-    legend {
-      color: #ed7e22;
-      font-weight: bold;
-      padding: 0.2em 0.6em;
-    }
-    label {
-      display: block;
-      margin: 0.5em 0;
-    }
-    input[type="number"] {
-      width: 100%;
-      padding: 0.4em;
-      margin-top: 0.2em;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    /* ---------- INFO-BULLES ---------- */
-    .tooltip {
-      position: relative;
-      display: inline-block;
-      cursor: help;
-      color: #333;
-      margin-left: 6px;
-      font-size: 0.9em;
-    }
-    .tooltip:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 0; top: 110%;
-      background: #ed7e22;
-      color: #fff;
-      padding: 0.5em;
-      border-radius: 4px;
-      width: 200px;
-      font-size: 0.8em;
-      pointer-events: none;
-    }
-    /* ---------- BOUTON ---------- */
-    button {
-      background-color: #ed7e22;
-      color: #fff;
-      border: none;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-    button:hover {
-      background-color: #da711f;
-    }
-    /* ---------- RESPONSE & ERREURS ---------- */
-    #response {
-      margin-top: 1em;
-      padding: 1em;
-      background: #fff6ed;
-      border-radius: 6px;
-      min-height: 50px;
-    }
-    .error {
-      color: red;
-      font-size: 0.9em;
-      margin-top: 0.2em;
-    }
-    .loader {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #ed7e22;
-      border-top: 2px solid transparent;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      margin-left: 6px;
-    }
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    footer {
-      margin-top: 2em;
-      text-align: center;
-      font-size: 0.8em;
-      color: #aaaaaa;
-    }
-    /* ---------- RESPONSIVE ---------- */
-    @media (max-width: 600px) {
-      .container {
-        margin: 0 0.5em;
-        padding: 1em;
-      }
-      label { margin: 0.3em 0; }
-    }
+    /* ... Ton style existant ... (omitted for brevity) */
   </style>
 </head>
 
@@ -143,81 +16,10 @@
   <div class="container">
     <h2>Formulaire d'Âges Biologiques</h2>
 
-    <!-- Petit disclaimer -->
-    <p style="font-size: 0.9em; color: #444;">
-      Merci de renseigner vos données pour recevoir un conseil personnalisé.
-      <br>Ces informations restent confidentielles et servent uniquement à générer un retour.
-    </p>
-
     <form id="ageForm">
-      <!-- Section Force -->
-      <fieldset>
-        <legend>Âge biologique de la force</legend>
-        <label>
-          Haut du corps
-          <span class="tooltip" data-tooltip="Évaluez l'âge bio. pectoraux, épaules, bras...">
-            (?)
-          </span>
-          : 
-          <input type="number" name="forceHaut" placeholder="Ex: 35 (entre 18 et 80)">
-        </label>
-        <label>Milieu du corps :
-          <input type="number" name="forceMilieu" placeholder="Ex: 40">
-        </label>
-        <label>Bas du corps :
-          <input type="number" name="forceBas" placeholder="Ex: 30">
-        </label>
-      </fieldset>
-
-      <!-- Section Flexibilité -->
-      <fieldset>
-        <legend>Âge biologique de la flexibilité</legend>
-        <label>Cou :
-          <input type="number" name="flexCou" placeholder="Ex: 28">
-        </label>
-        <label>Épaules :
-          <input type="number" name="flexEpaules" placeholder="Ex: 32">
-        </label>
-        <label>Lombaires :
-          <input type="number" name="flexLombaires" placeholder="Ex: 40">
-        </label>
-        <label>Ischios :
-          <input type="number" name="flexIschios" placeholder="Ex: 44">
-        </label>
-        <label>Hanches :
-          <input type="number" name="flexHanches" placeholder="Ex: 37">
-        </label>
-      </fieldset>
-
-      <!-- Section Métabolique -->
-      <fieldset>
-        <legend>Âge biologique métabolique</legend>
-        <label>
-          Poids (kg):
-          <input type="number" step="0.1" name="poids" placeholder="Ex: 70.5">
-        </label>
-        <label>% Masse graisseuse :
-          <input type="number" step="0.1" name="masseGrasse" placeholder="Ex: 20.5">
-        </label>
-        <label>% Masse musculaire :
-          <input type="number" step="0.1" name="masseMuscu" placeholder="Ex: 35.0">
-        </label>
-        <label>Âge métabolique :
-          <input type="number" name="ageMetabo" placeholder="Ex: 32">
-        </label>
-      </fieldset>
-
-      <!-- Section Cardio -->
-      <fieldset>
-        <legend>Âge cardio</legend>
-        <label>VO2max :
-          <input type="number" step="0.1" name="vo2max" placeholder="Ex: 40.5">
-        </label>
-        <label>Âge cardio :
-          <input type="number" name="ageCardio" placeholder="Ex: 38">
-        </label>
-      </fieldset>
-
+      <!-- ... Tous tes champs fieldset ... -->
+      <!-- Section Force, Flexibilité, Métabolique, Cardio -->
+      <!-- Comme dans les exemples précédents -->
       <button type="button" id="submitBtn">Obtenir un conseil IA</button>
     </form>
 
@@ -228,7 +30,6 @@
     © 2025 - Ma P'tite Salle
   </footer>
 
-  <!-- Script intégré -->
   <script>
   document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('ageForm');
@@ -236,17 +37,7 @@
     const responseDiv = document.getElementById('response');
 
     submitBtn.addEventListener('click', async () => {
-      // 1. Récupérer données
       const formData = new FormData(form);
-
-      // -- Validation basique : si "forceHaut" est vide par ex, on bloque.
-      //    On peut en rajouter selon les champs critiques.
-      if (!formData.get('forceHaut')) {
-        responseDiv.innerHTML = '<p class="error">Veuillez renseigner au moins votre âge de force haut du corps.</p>';
-        return;
-      }
-
-      // 2. Construire l'objet data
       const data = {
         forceHaut: formData.get('forceHaut'),
         forceMilieu: formData.get('forceMilieu'),
@@ -264,14 +55,11 @@
         ageCardio: formData.get('ageCardio')
       };
 
-      // 3. Afficher un loader
-      responseDiv.innerHTML = 'Envoi en cours <div class="loader"></div>';
+      // Message d'attente
+      responseDiv.innerHTML = "En cours de génération...";
 
       try {
-        // 4. Appel (optionnel) à la fonction serverless
-        //    Pour l'instant, je simule un délai sans faire de fetch (pour montrer le loader).
-        //    Décommente et adapte si tu as déjà la fonction /.netlify/functions/ai
-        /*
+        // Appel à la fonction serverless "ai"
         const res = await fetch('/.netlify/functions/ai', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -280,23 +68,18 @@
         const json = await res.json();
 
         if (json.error) {
-          responseDiv.innerHTML = '<p style="color:red;">Erreur : ' + json.error + '</p>';
+          responseDiv.innerHTML = `<p style="color:red;">Erreur: ${json.error}</p>`;
         } else {
-          responseDiv.innerHTML = '<h3>Conseil IA :</h3><p>' + json.reply + '</p>';
+          // Afficher le texte généré par l'IA
+          responseDiv.innerHTML = `
+            <h3>Conseil IA :</h3>
+            <p>${json.reply}</p>
+          `;
         }
-        */
-
-        // ---- TEMPORAIRE : Simule un délai de 1s
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        responseDiv.innerHTML = `
-          <h3>Test de soumission :</h3>
-          <p>J'ai bien reçu les données !</p>
-          <pre>${JSON.stringify(data, null, 2)}</pre>
-        `;
 
       } catch (err) {
         console.error(err);
-        responseDiv.innerHTML = '<p class="error">Une erreur s\'est produite.</p>';
+        responseDiv.innerHTML = '<p style="color:red;">Une erreur s\'est produite.</p>';
       }
     });
   });
