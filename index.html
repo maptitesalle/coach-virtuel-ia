@@ -157,43 +157,62 @@
 
   <!-- Script JS intégré directement ci-dessous -->
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('ageForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const responseDiv = document.getElementById('response');
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('ageForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const responseDiv = document.getElementById('response');
 
-    submitBtn.addEventListener('click', () => {
-      // 1. Récupérer les données du formulaire
-      const formData = new FormData(form);
-      const data = {
-        forceHaut: formData.get('forceHaut'),
-        forceMilieu: formData.get('forceMilieu'),
-        forceBas: formData.get('forceBas'),
-        flexCou: formData.get('flexCou'),
-        flexEpaules: formData.get('flexEpaules'),
-        flexLombaires: formData.get('flexLombaires'),
-        flexIschios: formData.get('flexIschios'),
-        flexHanches: formData.get('flexHanches'),
-        poids: formData.get('poids'),
-        masseGrasse: formData.get('masseGrasse'),
-        masseMuscu: formData.get('masseMuscu'),
-        ageMetabo: formData.get('ageMetabo'),
-        vo2max: formData.get('vo2max'),
-        ageCardio: formData.get('ageCardio')
-      };
+  submitBtn.addEventListener('click', async () => {
+    // 1. Récupérer données du formulaire
+    const formData = new FormData(form);
+    const data = {
+      forceHaut: formData.get('forceHaut'),
+      forceMilieu: formData.get('forceMilieu'),
+      forceBas: formData.get('forceBas'),
+      flexCou: formData.get('flexCou'),
+      flexEpaules: formData.get('flexEpaules'),
+      flexLombaires: formData.get('flexLombaires'),
+      flexIschios: formData.get('flexIschios'),
+      flexHanches: formData.get('flexHanches'),
+      poids: formData.get('poids'),
+      masseGrasse: formData.get('masseGrasse'),
+      masseMuscu: formData.get('masseMuscu'),
+      ageMetabo: formData.get('ageMetabo'),
+      vo2max: formData.get('vo2max'),
+      ageCardio: formData.get('ageCardio')
+    };
 
-      // 2. Afficher en console pour debug
-      console.log("Data saisie:", data);
+    // 2. Message d'attente
+    responseDiv.innerHTML = "Envoi en cours...";
 
-      // 3. Juste un message sur la page (test local)
-      responseDiv.innerHTML = `
-        <h3>Test de soumission :</h3>
-        <p>J'ai bien reçu les données !</p>
-        <pre>${JSON.stringify(data, null, 2)}</pre>
-      `;
-    });
+    try {
+      // 3. Appeler la fonction serverless (ai.js)
+      const res = await fetch('/.netlify/functions/ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      // 4. Récupérer la réponse en JSON
+      const json = await res.json();
+
+      // 5. Afficher la réponse
+      if (json.error) {
+        // S'il y a une erreur côté serverless, on l'affiche
+        responseDiv.innerHTML = `<p style="color:red;">Erreur: ${json.error}</p>`;
+      } else {
+        // "reply" est la propriété qu'on renvoie dans ai.js
+        responseDiv.innerHTML = `<h3>Réponse du serveur :</h3><p>${json.reply}</p>`;
+      }
+
+    } catch (err) {
+      console.error(err);
+      responseDiv.innerHTML = `<p style="color:red;">Une erreur s'est produite.</p>`;
+    }
   });
-  </script>
+});
+</script>
+
 
 </body>
 </html>
