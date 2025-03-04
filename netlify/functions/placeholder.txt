@@ -1,0 +1,1 @@
+Ce fichier ne sert qu'à créer le dossier netlify/functions
