@@ -4,19 +4,25 @@
   <meta charset="UTF-8">
   <title>Ma P’tite Salle - Coach Virtuel IA</title>
 
-  <!-- Style minimaliste, si besoin -->
   <style>
     body {
       font-family: sans-serif;
       background: #fdf7f3;
-      margin: 0; padding: 0 1em 2em;
+      margin: 0; 
+      padding: 0 1em 2em;
     }
     header {
-      background: #ed7e22; color: #fff; text-align: center; padding: 1em;
+      background: #ed7e22; 
+      color: #fff; 
+      text-align: center; 
+      padding: 1em;
       margin-bottom: 1em;
     }
     .container {
-      max-width: 600px; margin: 0 auto; background: #fff8f2; padding: 1em;
+      max-width: 600px; 
+      margin: 0 auto; 
+      background: #fff8f2; 
+      padding: 1em;
       border-radius: 8px;
     }
     fieldset {
@@ -30,13 +36,32 @@
       color: #ed7e22;
       font-weight: bold;
     }
-    label { display: block; margin: 0.5em 0; }
+    label {
+      display: block;
+      margin: 0.5em 0;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 0.3em;
+      box-sizing: border-box;
+    }
     button {
-      background-color: #ed7e22; color: #fff; border: none;
-      padding: 0.6em 1.2em; border-radius: 4px; cursor: pointer;
+      background-color: #ed7e22; 
+      color: #fff; 
+      border: none;
+      padding: 0.6em 1.2em; 
+      border-radius: 4px; 
+      cursor: pointer;
     }
     #response {
-      margin-top: 1em; background: #fff6ed; padding: 1em; border-radius: 4px;
+      margin-top: 1em; 
+      background: #fff6ed; 
+      padding: 1em; 
+      border-radius: 4px;
+    }
+    footer {
+      margin-top: 2em; 
+      text-align: center;
     }
   </style>
 
@@ -69,7 +94,8 @@
     <h2>Formulaire d'Âges Biologiques</h2>
 
     <form id="ageForm">
-      <!-- Exemples de champs (à adapter si besoin) -->
+
+      <!-- Section Force -->
       <fieldset>
         <legend>Âge biologique de la force</legend>
         <label>Haut du corps :
@@ -83,29 +109,73 @@
         </label>
       </fieldset>
 
-      <!-- Ajoutez vos fieldsets flexibilité, métabolique, cardio... -->
-      <!-- ... -->
+      <!-- Section Flexibilité -->
+      <fieldset>
+        <legend>Âge biologique de la flexibilité</legend>
+        <label>Cou :
+          <input type="number" name="flexCou" placeholder="Ex: 28">
+        </label>
+        <label>Épaules :
+          <input type="number" name="flexEpaules" placeholder="Ex: 32">
+        </label>
+        <label>Lombaires :
+          <input type="number" name="flexLombaires" placeholder="Ex: 40">
+        </label>
+        <label>Ischios :
+          <input type="number" name="flexIschios" placeholder="Ex: 44">
+        </label>
+        <label>Hanches :
+          <input type="number" name="flexHanches" placeholder="Ex: 37">
+        </label>
+      </fieldset>
 
-      <!-- Bouton pour appel IA -->
+      <!-- Section Métabolique -->
+      <fieldset>
+        <legend>Âge biologique métabolique</legend>
+        <label>Poids (kg) :
+          <input type="number" step="0.1" name="poids" placeholder="Ex: 70.5">
+        </label>
+        <label>% Masse graisseuse :
+          <input type="number" step="0.1" name="masseGrasse" placeholder="Ex: 20.5">
+        </label>
+        <label>% Masse musculaire :
+          <input type="number" step="0.1" name="masseMuscu" placeholder="Ex: 35.0">
+        </label>
+        <label>Âge métabolique :
+          <input type="number" name="ageMetabo" placeholder="Ex: 32">
+        </label>
+      </fieldset>
+
+      <!-- Section Cardio -->
+      <fieldset>
+        <legend>Âge cardio</legend>
+        <label>VO2max :
+          <input type="number" step="0.1" name="vo2max" placeholder="Ex: 40.5">
+        </label>
+        <label>Âge cardio :
+          <input type="number" name="ageCardio" placeholder="Ex: 38">
+        </label>
+      </fieldset>
+
       <button type="button" id="submitBtn">Obtenir un conseil IA</button>
     </form>
 
     <div id="response"></div>
   </div>
 
-  <footer style="margin-top: 2em; text-align: center;">
+  <footer>
     © 2025 - Ma P'tite Salle
   </footer>
 
   <!-- Script principal en mode module -->
   <script type="module">
-    // 1) Import ES modules Firebase
+    /* 1) Import ES modules Firebase */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
     // (Si vous voulez Firestore, importez-le aussi, ex.:
     // import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
     // )
 
-    // 2) Configuration Firebase
+    /* 2) Configuration Firebase */
     const firebaseConfig = {
       apiKey: "AIzaSyAIuTNmgOocUdpRFQN7BDXSlr6Rbp5kMKc",
       authDomain: "ma-p-tite-salle.firebaseapp.com",
@@ -115,14 +185,10 @@
       appId: "1:429185660119:web:f260c440c3e67f6782ec92"
     };
 
-    // 3) Initialisation de l'app Firebase
+    /* 3) Initialisation de l'app Firebase */
     const app = initializeApp(firebaseConfig);
 
-    // -- Si vous utilisez Firestore, il vous faudrait:
-    // const db = getFirestore(app);
-    // etc.
-
-    // 4) Gestion du formulaire + appel IA
+    /* 4) Gestion du formulaire + appel IA */
     const form = document.getElementById('ageForm');
     const submitBtn = document.getElementById('submitBtn');
     const responseDiv = document.getElementById('response');
