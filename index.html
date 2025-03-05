@@ -94,6 +94,7 @@
     <h2>Formulaire d'Âges Biologiques</h2>
 
     <form id="ageForm">
+
       <!-- Section Force -->
       <fieldset>
         <legend>Âge biologique de la force</legend>
@@ -168,13 +169,13 @@
 
   <!-- Script principal en mode module -->
   <script type="module">
-    /* 1) Import ES modules Firebase */
+    // (1) Importer Firebase si vous voulez l'init (optionnel)
+    // On la laisse si plus tard vous faites autre chose côté front
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
 
-    /* 2) Configuration Firebase */
+    // (2) Votre config Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyAIuTNmgOocUdpRFQN7BDXSlr6Rbp5kMKc",
+      apiKey: "AIzaSy...",
       authDomain: "ma-p-tite-salle.firebaseapp.com",
       projectId: "ma-p-tite-salle",
       storageBucket: "ma-p-tite-salle.firebasestorage.app",
@@ -182,17 +183,25 @@
       appId: "1:429185660119:web:f260c440c3e67f6782ec92"
     };
 
-    /* 3) Initialisation de l'app Firebase */
+    // (3) Initialisation app si vous voulez plus tard l'utiliser
     const app = initializeApp(firebaseConfig);
-    /* Récupérer la base Firestore */
-    const db = getFirestore(app);
 
-    /* 4) Gestion du formulaire + appel IA */
+    // (4) Récupération du form et bouton
     const form = document.getElementById('ageForm');
     const submitBtn = document.getElementById('submitBtn');
     const responseDiv = document.getElementById('response');
 
+    // (5) Au clic, vérifier user Netlify, puis fetch /saveData + /ai
     submitBtn.addEventListener('click', async () => {
+      // A) Vérifier user Netlify Identity
+      const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
+      if (!user) {
+        alert("Connectez-vous d’abord!");
+        return;
+      }
+      const token = await user.jwt();
+
+      // B) Récupérer les champs du formulaire
       const formData = new FormData(form);
       const data = {
         forceHaut: formData.get('forceHaut'),
@@ -208,40 +217,54 @@
         masseMuscu: formData.get('masseMuscu'),
         ageMetabo: formData.get('ageMetabo'),
         vo2max: formData.get('vo2max'),
-        ageCardio: formData.get('ageCardio'),
-        timestamp: new Date().toISOString()
+        ageCardio: formData.get('ageCardio')
       };
 
-      // (A) Enregistrement dans Firestore
+      // C) Appeler netlify function /saveData
       try {
-        const docRef = await addDoc(collection(db, "userData"), data);
-        console.log("Document créé dans Firestore, ID=", docRef.id);
+        const res = await fetch('/.netlify/functions/saveData', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(data)
+        });
+        const json = await res.json();
+        if (!res.ok) {
+          alert("Erreur enregistrement Firestore: " + JSON.stringify(json));
+          return;
+        }
+        console.log("Document Firestore créé:", json.docId);
       } catch (err) {
-        console.error("Erreur Firestore:", err);
+        console.error("Erreur fetch /saveData:", err);
       }
 
-      // (B) Appel IA en serverless
-      responseDiv.innerHTML = "En cours de génération...";
+      // D) Ensuite, vous pouvez appeler la fonction /ai
+      //    Ou l'inclure directement dans la même requête si vous voulez
+      responseDiv.innerHTML = "En cours de génération IA...";
 
       try {
         const res = await fetch('/.netlify/functions/ai', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify(data)
         });
         const json = await res.json();
-
-        if (json.error) {
-          responseDiv.innerHTML = `<p style="color:red;">Erreur: ${json.error}</p>`;
-        } else {
-          responseDiv.innerHTML = `
-            <h3>Conseil IA :</h3>
-            <p>${json.reply}</p>
-          `;
+        if (!res.ok) {
+          responseDiv.innerHTML = `<p style="color:red;">Erreur IA: ${json.error}</p>`;
+          return;
         }
+        responseDiv.innerHTML = `
+          <h3>Conseil IA :</h3>
+          <p>${json.reply}</p>
+        `;
       } catch (err) {
-        console.error(err);
-        responseDiv.innerHTML = '<p style="color:red;">Une erreur s\'est produite.</p>';
+        console.error("Erreur fetch /ai:", err);
+        responseDiv.innerHTML = '<p style="color:red;">Une erreur IA s\'est produite.</p>';
       }
     });
   </script>
