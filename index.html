@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Ma P’tite Salle - Coach Virtuel IA</title>
+  <title>Ma P’tite Salle - Wizard Multi-Étapes</title>
 
   <style>
     body {
@@ -45,6 +45,9 @@
       padding: 0.3em;
       box-sizing: border-box;
     }
+    .wizard-step { display: none; }
+    .wizard-step.active { display: block; }
+
     button {
       background-color: #ed7e22; 
       color: #fff; 
@@ -52,31 +55,26 @@
       padding: 0.6em 1.2em; 
       border-radius: 4px; 
       cursor: pointer;
+      margin-right: 0.5em;
     }
-    #response {
-      margin-top: 1em; 
+    #recapContainer {
       background: #fff6ed; 
       padding: 1em; 
       border-radius: 4px;
-    }
-    footer {
-      margin-top: 2em; 
-      text-align: center;
+      margin-top: 1em;
     }
   </style>
 
   <!-- Netlify Identity script -->
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
-
 <body>
   <header>
-    <h1>Ma P’tite Salle - Coach Virtuel IA</h1>
+    <h1>Ma P’tite Salle - Wizard Multi-Étapes</h1>
   </header>
 
   <!-- Bouton de connexion Netlify Identity -->
   <button onclick="netlifyIdentity.open()">Se connecter / Créer un compte</button>
-
   <!-- Script Netlify Identity : rechargement après login -->
   <script>
     if (window.netlifyIdentity) {
@@ -91,136 +89,240 @@
   </script>
 
   <div class="container">
-    <h2>Formulaire d'Âges Biologiques</h2>
+    <h2>Formulaire Multi-Étapes</h2>
 
-    <form id="ageForm">
+    <!-- Étape 1 : Données eGym -->
+    <div class="wizard-step active" id="step1">
+      <h3>Étape 1 : Données eGym</h3>
+      <form id="formStep1">
+        <fieldset>
+          <legend>Âge biologique de la force</legend>
+          <label>Haut du corps :
+            <input type="number" name="forceHaut" placeholder="Ex: 35">
+          </label>
+          <label>Milieu du corps :
+            <input type="number" name="forceMilieu" placeholder="Ex: 40">
+          </label>
+          <label>Bas du corps :
+            <input type="number" name="forceBas" placeholder="Ex: 30">
+          </label>
+        </fieldset>
 
-      <!-- Section Force -->
-      <fieldset>
-        <legend>Âge biologique de la force</legend>
-        <label>Haut du corps :
-          <input type="number" name="forceHaut" placeholder="Ex: 35">
-        </label>
-        <label>Milieu du corps :
-          <input type="number" name="forceMilieu" placeholder="Ex: 40">
-        </label>
-        <label>Bas du corps :
-          <input type="number" name="forceBas" placeholder="Ex: 30">
-        </label>
-      </fieldset>
+        <fieldset>
+          <legend>Âge biologique de la flexibilité</legend>
+          <label>Cou :
+            <input type="number" name="flexCou" placeholder="Ex: 28">
+          </label>
+          <label>Épaules :
+            <input type="number" name="flexEpaules" placeholder="Ex: 32">
+          </label>
+          <label>Lombaires :
+            <input type="number" name="flexLombaires" placeholder="Ex: 40">
+          </label>
+          <label>Ischios :
+            <input type="number" name="flexIschios" placeholder="Ex: 44">
+          </label>
+          <label>Hanches :
+            <input type="number" name="flexHanches" placeholder="Ex: 37">
+          </label>
+        </fieldset>
 
-      <!-- Section Flexibilité -->
-      <fieldset>
-        <legend>Âge biologique de la flexibilité</legend>
-        <label>Cou :
-          <input type="number" name="flexCou" placeholder="Ex: 28">
-        </label>
-        <label>Épaules :
-          <input type="number" name="flexEpaules" placeholder="Ex: 32">
-        </label>
-        <label>Lombaires :
-          <input type="number" name="flexLombaires" placeholder="Ex: 40">
-        </label>
-        <label>Ischios :
-          <input type="number" name="flexIschios" placeholder="Ex: 44">
-        </label>
-        <label>Hanches :
-          <input type="number" name="flexHanches" placeholder="Ex: 37">
-        </label>
-      </fieldset>
+        <fieldset>
+          <legend>Âge biologique métabolique</legend>
+          <label>Poids (kg) :
+            <input type="number" step="0.1" name="poids" placeholder="Ex: 70.5">
+          </label>
+          <label>% Masse graisseuse :
+            <input type="number" step="0.1" name="masseGrasse" placeholder="Ex: 20.5">
+          </label>
+          <label>% Masse musculaire :
+            <input type="number" step="0.1" name="masseMuscu" placeholder="Ex: 35.0">
+          </label>
+          <label>Âge métabolique :
+            <input type="number" name="ageMetabo" placeholder="Ex: 32">
+          </label>
+        </fieldset>
 
-      <!-- Section Métabolique -->
-      <fieldset>
-        <legend>Âge biologique métabolique</legend>
-        <label>Poids (kg) :
-          <input type="number" step="0.1" name="poids" placeholder="Ex: 70.5">
-        </label>
-        <label>% Masse graisseuse :
-          <input type="number" step="0.1" name="masseGrasse" placeholder="Ex: 20.5">
-        </label>
-        <label>% Masse musculaire :
-          <input type="number" step="0.1" name="masseMuscu" placeholder="Ex: 35.0">
-        </label>
-        <label>Âge métabolique :
-          <input type="number" name="ageMetabo" placeholder="Ex: 32">
-        </label>
-      </fieldset>
+        <fieldset>
+          <legend>Âge cardio</legend>
+          <label>VO2max :
+            <input type="number" step="0.1" name="vo2max" placeholder="Ex: 40.5">
+          </label>
+          <label>Âge cardio :
+            <input type="number" name="ageCardio" placeholder="Ex: 38">
+          </label>
+        </fieldset>
+      </form>
+      <button onclick="goToStep(2)">Étape suivante</button>
+    </div>
 
-      <!-- Section Cardio -->
-      <fieldset>
-        <legend>Âge cardio</legend>
-        <label>VO2max :
-          <input type="number" step="0.1" name="vo2max" placeholder="Ex: 40.5">
-        </label>
-        <label>Âge cardio :
-          <input type="number" name="ageCardio" placeholder="Ex: 38">
-        </label>
-      </fieldset>
+    <!-- Étape 2 : Objectifs -->
+    <div class="wizard-step" id="step2">
+      <h3>Étape 2 : Objectifs</h3>
+      <form id="formStep2">
+        <label><input type="checkbox" name="objectifs" value="prise_masse"> Prise de masse</label>
+        <label><input type="checkbox" name="objectifs" value="perte_poids"> Perte de poids</label>
+        <label><input type="checkbox" name="objectifs" value="souplesse"> Souplesse</label>
+        <label><input type="checkbox" name="objectifs" value="cardio"> Capacité cardio</label>
+        <label><input type="checkbox" name="objectifs" value="maintien_sante"> Maintien du niveau de santé</label>
+      </form>
+      <button onclick="goToStep(1)">Retour</button>
+      <button onclick="goToStep(3)">Étape suivante</button>
+    </div>
 
-      <button type="button" id="submitBtn">Obtenir un conseil IA</button>
-    </form>
+    <!-- Étape 3 : Régimes -->
+    <div class="wizard-step" id="step3">
+      <h3>Étape 3 : Régimes / Contraintes Alimentaires</h3>
+      <form id="formStep3">
+        <label><input type="checkbox" name="regimes" value="sans_gluten"> Sans gluten</label>
+        <label><input type="checkbox" name="regimes" value="vegan"> Vegan</label>
+        <label><input type="checkbox" name="regimes" value="sans_oeuf"> Sans œuf</label>
+        <label><input type="checkbox" name="regimes" value="sans_lait"> Sans produit laitier</label>
+      </form>
+      <button onclick="goToStep(2)">Retour</button>
+      <button onclick="goToStep(4)">Étape suivante</button>
+    </div>
 
-    <div id="response"></div>
+    <!-- Étape 4 : Pathologies -->
+    <div class="wizard-step" id="step4">
+      <h3>Étape 4 : Pathologies / Santé</h3>
+      <form id="formStep4">
+        <label><input type="checkbox" name="pathologies" value="insuffisance_cardiaque"> Insuffisance cardiaque</label>
+        <label><input type="checkbox" name="pathologies" value="arthrose"> Arthrose</label>
+        <label><input type="checkbox" name="pathologies" value="problemes_respiratoires"> Problèmes respiratoires</label>
+        <label><input type="checkbox" name="pathologies" value="obesite"> Obésité</label>
+        <label><input type="checkbox" name="pathologies" value="hypothyroidie"> Hypothyroïdie</label>
+        <p>Autres infos (bilan sanguin...) :</p>
+        <textarea name="autresInfos" rows="3" placeholder="Ex: cholestérol élevé, anémie..."></textarea>
+      </form>
+      <button onclick="goToStep(3)">Retour</button>
+      <button onclick="goToStep(5)">Étape suivante</button>
+    </div>
+
+    <!-- Étape 5 : Récap -->
+    <div class="wizard-step" id="step5">
+      <h3>Étape 5 : Récapitulatif</h3>
+      <div id="recapContainer"></div>
+      <button onclick="goToStep(4)">Retour</button>
+      <button onclick="submitAllData()">Valider & Enregistrer</button>
+    </div>
+
   </div>
 
   <footer>
     © 2025 - Ma P'tite Salle
   </footer>
 
-  <!-- Script principal en mode module -->
-  <script type="module">
-    // (1) Importer Firebase si vous voulez l'init (optionnel)
-    // On la laisse si plus tard vous faites autre chose côté front
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+  <script>
+    // On stocke les données de toutes les étapes dans un objet
+    const collectedData = {};
 
-    // (2) Votre config Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSy...",
-      authDomain: "ma-p-tite-salle.firebaseapp.com",
-      projectId: "ma-p-tite-salle",
-      storageBucket: "ma-p-tite-salle.firebasestorage.app",
-      messagingSenderId: "429185660119",
-      appId: "1:429185660119:web:f260c440c3e67f6782ec92"
-    };
+    function goToStep(stepNumber) {
+      // Masquer tous les .wizard-step
+      document.querySelectorAll('.wizard-step').forEach(div => {
+        div.classList.remove('active');
+      });
+      // Afficher celui demandé
+      const stepDiv = document.getElementById('step' + stepNumber);
+      if (stepDiv) {
+        stepDiv.classList.add('active');
+      }
 
-    // (3) Initialisation app si vous voulez plus tard l'utiliser
-    const app = initializeApp(firebaseConfig);
+      // Si on va vers step5 (récap), on construit le recap
+      if (stepNumber === 5) {
+        buildRecap();
+      }
+    }
 
-    // (4) Récupération du form et bouton
-    const form = document.getElementById('ageForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const responseDiv = document.getElementById('response');
+    function buildRecap() {
+      // Récupérer tout ce qu'on a collecté pour un affichage
+      const recapDiv = document.getElementById('recapContainer');
+      recapDiv.innerHTML = `
+        <p><strong>Données eGym :</strong></p>
+        <ul>
+          <li>Force : Haut(${collectedData.forceHaut}), Milieu(${collectedData.forceMilieu}), Bas(${collectedData.forceBas})</li>
+          <li>Flexibilité : Cou(${collectedData.flexCou}), Épaules(${collectedData.flexEpaules}), Lombaires(${collectedData.flexLombaires}), Ischios(${collectedData.flexIschios}), Hanches(${collectedData.flexHanches})</li>
+          <li>Métabolique : Poids(${collectedData.poids}), %MG(${collectedData.masseGrasse}), %Muscu(${collectedData.masseMuscu}), ÂgeMetabo(${collectedData.ageMetabo})</li>
+          <li>Cardio : VO2max(${collectedData.vo2max}), Âge Cardio(${collectedData.ageCardio})</li>
+        </ul>
 
-    // (5) Au clic, vérifier user Netlify, puis fetch /saveData + /ai
-    submitBtn.addEventListener('click', async () => {
-      // A) Vérifier user Netlify Identity
+        <p><strong>Objectifs :</strong> ${collectedData.objectifs?.join(', ')}</p>
+        <p><strong>Régimes :</strong> ${collectedData.regimes?.join(', ')}</p>
+        <p><strong>Pathologies :</strong> ${collectedData.pathologies?.join(', ')}</p>
+        <p><strong>Autres infos :</strong> ${collectedData.autresInfos || ''}</p>
+      `;
+    }
+
+    // collectDataFromStep() pour chaque étape
+    // On l'appelle juste avant de passer à l'étape suivante
+
+    function collectStep1() {
+      const form1 = document.getElementById('formStep1');
+      // Récupérer tous les champs
+      collectedData.forceHaut = form1.forceHaut.value;
+      collectedData.forceMilieu = form1.forceMilieu.value;
+      collectedData.forceBas = form1.forceBas.value;
+      collectedData.flexCou = form1.flexCou.value;
+      collectedData.flexEpaules = form1.flexEpaules.value;
+      collectedData.flexLombaires = form1.flexLombaires.value;
+      collectedData.flexIschios = form1.flexIschios.value;
+      collectedData.flexHanches = form1.flexHanches.value;
+      collectedData.poids = form1.poids.value;
+      collectedData.masseGrasse = form1.masseGrasse.value;
+      collectedData.masseMuscu = form1.masseMuscu.value;
+      collectedData.ageMetabo = form1.ageMetabo.value;
+      collectedData.vo2max = form1.vo2max.value;
+      collectedData.ageCardio = form1.ageCardio.value;
+    }
+
+    function collectStep2() {
+      const form2 = document.getElementById('formStep2');
+      const checked = form2.querySelectorAll('input[name="objectifs"]:checked');
+      collectedData.objectifs = [...checked].map(c => c.value);
+    }
+
+    function collectStep3() {
+      const form3 = document.getElementById('formStep3');
+      const checked = form3.querySelectorAll('input[name="regimes"]:checked');
+      collectedData.regimes = [...checked].map(c => c.value);
+    }
+
+    function collectStep4() {
+      const form4 = document.getElementById('formStep4');
+      const checked = form4.querySelectorAll('input[name="pathologies"]:checked');
+      collectedData.pathologies = [...checked].map(c => c.value);
+      collectedData.autresInfos = form4.autresInfos.value;
+    }
+
+    // On modifie goToStep() pour collecter avant de passer
+    // On stocke l'ancien goToStep dans myOldGoToStep si besoin ?
+
+    // On surcharge goToStep pour qu'il appelle la collecte
+    const originalGoToStep = goToStep; 
+    goToStep = function(stepNumber) {
+      // Collecte des champs avant de quitter l'étape courante
+      const currentActive = document.querySelector('.wizard-step.active');
+      if (currentActive) {
+        if (currentActive.id === 'step1') collectStep1();
+        if (currentActive.id === 'step2') collectStep2();
+        if (currentActive.id === 'step3') collectStep3();
+        if (currentActive.id === 'step4') collectStep4();
+      }
+      // Puis on appelle l'original
+      originalGoToStep(stepNumber);
+    }
+
+    // A la fin, on envoie le tout
+    async function submitAllData() {
+      // Vérifier user Netlify Identity
       const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
       if (!user) {
-        alert("Connectez-vous d’abord!");
+        alert("Veuillez vous connecter d’abord !");
         return;
       }
       const token = await user.jwt();
 
-      // B) Récupérer les champs du formulaire
-      const formData = new FormData(form);
-      const data = {
-        forceHaut: formData.get('forceHaut'),
-        forceMilieu: formData.get('forceMilieu'),
-        forceBas: formData.get('forceBas'),
-        flexCou: formData.get('flexCou'),
-        flexEpaules: formData.get('flexEpaules'),
-        flexLombaires: formData.get('flexLombaires'),
-        flexIschios: formData.get('flexIschios'),
-        flexHanches: formData.get('flexHanches'),
-        poids: formData.get('poids'),
-        masseGrasse: formData.get('masseGrasse'),
-        masseMuscu: formData.get('masseMuscu'),
-        ageMetabo: formData.get('ageMetabo'),
-        vo2max: formData.get('vo2max'),
-        ageCardio: formData.get('ageCardio')
-      };
-
-      // C) Appeler netlify function /saveData
+      // On peut faire un fetch sur /saveData
       try {
         const res = await fetch('/.netlify/functions/saveData', {
           method: 'POST',
@@ -228,45 +330,17 @@
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify(collectedData)
         });
         const json = await res.json();
         if (!res.ok) {
-          alert("Erreur enregistrement Firestore: " + JSON.stringify(json));
+          alert("Erreur enregistrement Firestore : " + JSON.stringify(json));
           return;
         }
+        alert("Données enregistrées avec succès, docId = " + json.docId);
         console.log("Document Firestore créé:", json.docId);
+
+        // Ensuite, on pourrait rediriger vers un dashboard, ou reset le wizard...
       } catch (err) {
         console.error("Erreur fetch /saveData:", err);
-      }
-
-      // D) Ensuite, vous pouvez appeler la fonction /ai
-      //    Ou l'inclure directement dans la même requête si vous voulez
-      responseDiv.innerHTML = "En cours de génération IA...";
-
-      try {
-        const res = await fetch('/.netlify/functions/ai', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify(data)
-        });
-        const json = await res.json();
-        if (!res.ok) {
-          responseDiv.innerHTML = `<p style="color:red;">Erreur IA: ${json.error}</p>`;
-          return;
-        }
-        responseDiv.innerHTML = `
-          <h3>Conseil IA :</h3>
-          <p>${json.reply}</p>
-        `;
-      } catch (err) {
-        console.error("Erreur fetch /ai:", err);
-        responseDiv.innerHTML = '<p style="color:red;">Une erreur IA s\'est produite.</p>';
-      }
-    });
-  </script>
-</body>
-</html>
+        alert("Erreur
