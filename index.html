@@ -1,25 +1,47 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-<button onClick="netlifyIdentity.open()">Se connecter / Créer un compte</button>
-<script>
-  if (window.netlifyIdentity) {
-    window.netlifyIdentity.on("init", user => {
-      if (!user) {
-        window.netlifyIdentity.on("login", () => {
-          document.location.reload();
-        });
-      }
-    });
-  }
-</script>
-
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Ma P’tite Salle - Coach Virtuel IA</title>
+
+  <!-- Style minimaliste, si besoin -->
   <style>
-    /* ... Ton style existant ... (omitted for brevity) */
+    body {
+      font-family: sans-serif;
+      background: #fdf7f3;
+      margin: 0; padding: 0 1em 2em;
+    }
+    header {
+      background: #ed7e22; color: #fff; text-align: center; padding: 1em;
+      margin-bottom: 1em;
+    }
+    .container {
+      max-width: 600px; margin: 0 auto; background: #fff8f2; padding: 1em;
+      border-radius: 8px;
+    }
+    fieldset {
+      border: 1px solid #ebebeb;
+      margin-bottom: 1em;
+      padding: 1em;
+      border-radius: 4px;
+      background: #fff;
+    }
+    legend {
+      color: #ed7e22;
+      font-weight: bold;
+    }
+    label { display: block; margin: 0.5em 0; }
+    button {
+      background-color: #ed7e22; color: #fff; border: none;
+      padding: 0.6em 1.2em; border-radius: 4px; cursor: pointer;
+    }
+    #response {
+      margin-top: 1em; background: #fff6ed; padding: 1em; border-radius: 4px;
+    }
   </style>
+
+  <!-- Netlify Identity script -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 
 <body>
@@ -27,25 +49,80 @@
     <h1>Ma P’tite Salle - Coach Virtuel IA</h1>
   </header>
 
+  <!-- Bouton de connexion Netlify Identity -->
+  <button onclick="netlifyIdentity.open()">Se connecter / Créer un compte</button>
+
+  <!-- Script Netlify Identity : rechargement après login -->
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.reload();
+          });
+        }
+      });
+    }
+  </script>
+
   <div class="container">
     <h2>Formulaire d'Âges Biologiques</h2>
 
     <form id="ageForm">
-      <!-- ... Tous tes champs fieldset ... -->
-      <!-- Section Force, Flexibilité, Métabolique, Cardio -->
-      <!-- Comme dans les exemples précédents -->
+      <!-- Exemples de champs (à adapter si besoin) -->
+      <fieldset>
+        <legend>Âge biologique de la force</legend>
+        <label>Haut du corps :
+          <input type="number" name="forceHaut" placeholder="Ex: 35">
+        </label>
+        <label>Milieu du corps :
+          <input type="number" name="forceMilieu" placeholder="Ex: 40">
+        </label>
+        <label>Bas du corps :
+          <input type="number" name="forceBas" placeholder="Ex: 30">
+        </label>
+      </fieldset>
+
+      <!-- Ajoutez vos fieldsets flexibilité, métabolique, cardio... -->
+      <!-- ... -->
+
+      <!-- Bouton pour appel IA -->
       <button type="button" id="submitBtn">Obtenir un conseil IA</button>
     </form>
 
     <div id="response"></div>
   </div>
 
-  <footer>
+  <footer style="margin-top: 2em; text-align: center;">
     © 2025 - Ma P'tite Salle
   </footer>
 
-  <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  <!-- Script principal en mode module -->
+  <script type="module">
+    // 1) Import ES modules Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
+    // (Si vous voulez Firestore, importez-le aussi, ex.:
+    // import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
+    // )
+
+    // 2) Configuration Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAIuTNmgOocUdpRFQN7BDXSlr6Rbp5kMKc",
+      authDomain: "ma-p-tite-salle.firebaseapp.com",
+      projectId: "ma-p-tite-salle",
+      storageBucket: "ma-p-tite-salle.firebasestorage.app",
+      messagingSenderId: "429185660119",
+      appId: "1:429185660119:web:f260c440c3e67f6782ec92"
+    };
+
+    // 3) Initialisation de l'app Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // -- Si vous utilisez Firestore, il vous faudrait:
+    // const db = getFirestore(app);
+    // etc.
+
+    // 4) Gestion du formulaire + appel IA
     const form = document.getElementById('ageForm');
     const submitBtn = document.getElementById('submitBtn');
     const responseDiv = document.getElementById('response');
@@ -69,11 +146,9 @@
         ageCardio: formData.get('ageCardio')
       };
 
-      // Message d'attente
       responseDiv.innerHTML = "En cours de génération...";
 
       try {
-        // Appel à la fonction serverless "ai"
         const res = await fetch('/.netlify/functions/ai', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -84,36 +159,16 @@
         if (json.error) {
           responseDiv.innerHTML = `<p style="color:red;">Erreur: ${json.error}</p>`;
         } else {
-          // Afficher le texte généré par l'IA
           responseDiv.innerHTML = `
             <h3>Conseil IA :</h3>
             <p>${json.reply}</p>
           `;
         }
-
       } catch (err) {
         console.error(err);
         responseDiv.innerHTML = '<p style="color:red;">Une erreur s\'est produite.</p>';
       }
     });
-  });
   </script>
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyAIuTNmgOocUdpRFQN7BDXSlr6Rbp5kMKc",
-  authDomain: "ma-p-tite-salle.firebaseapp.com",
-  projectId: "ma-p-tite-salle",
-  storageBucket: "ma-p-tite-salle.firebasestorage.app",
-  messagingSenderId: "429185660119",
-  appId: "1:429185660119:web:f260c440c3e67f6782ec92"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 </body>
 </html>
