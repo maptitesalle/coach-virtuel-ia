@@ -94,7 +94,6 @@
     <h2>Formulaire d'Âges Biologiques</h2>
 
     <form id="ageForm">
-
       <!-- Section Force -->
       <fieldset>
         <legend>Âge biologique de la force</legend>
@@ -171,9 +170,7 @@
   <script type="module">
     /* 1) Import ES modules Firebase */
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-app.js";
-    // (Si vous voulez Firestore, importez-le aussi, ex.:
-    // import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
-    // )
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
 
     /* 2) Configuration Firebase */
     const firebaseConfig = {
@@ -187,6 +184,8 @@
 
     /* 3) Initialisation de l'app Firebase */
     const app = initializeApp(firebaseConfig);
+    /* Récupérer la base Firestore */
+    const db = getFirestore(app);
 
     /* 4) Gestion du formulaire + appel IA */
     const form = document.getElementById('ageForm');
@@ -209,9 +208,19 @@
         masseMuscu: formData.get('masseMuscu'),
         ageMetabo: formData.get('ageMetabo'),
         vo2max: formData.get('vo2max'),
-        ageCardio: formData.get('ageCardio')
+        ageCardio: formData.get('ageCardio'),
+        timestamp: new Date().toISOString()
       };
 
+      // (A) Enregistrement dans Firestore
+      try {
+        const docRef = await addDoc(collection(db, "userData"), data);
+        console.log("Document créé dans Firestore, ID=", docRef.id);
+      } catch (err) {
+        console.error("Erreur Firestore:", err);
+      }
+
+      // (B) Appel IA en serverless
       responseDiv.innerHTML = "En cours de génération...";
 
       try {
