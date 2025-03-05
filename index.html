@@ -74,7 +74,7 @@
   </header>
 
   <!-- Bouton de connexion Netlify Identity -->
-  <button onclick="netlifyIdentity.open()">Se connecter / Créer un compte</button>
+  <button id="btnLogin">Se connecter / Créer un compte</button>
   <!-- Script Netlify Identity : rechargement après login -->
   <script>
     if (window.netlifyIdentity) {
@@ -86,6 +86,15 @@
         }
       });
     }
+    // Au clic sur btnLogin, on ouvre netlify identity
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('btnLogin');
+      if (btn && window.netlifyIdentity) {
+        btn.addEventListener('click', () => {
+          netlifyIdentity.open();
+        });
+      }
+    });
   </script>
 
   <div class="container">
@@ -153,7 +162,7 @@
           </label>
         </fieldset>
       </form>
-      <button onclick="goToStep(2)">Étape suivante</button>
+      <button id="btnStep1Next">Étape suivante</button>
     </div>
 
     <!-- Étape 2 : Objectifs -->
@@ -166,8 +175,8 @@
         <label><input type="checkbox" name="objectifs" value="cardio"> Capacité cardio</label>
         <label><input type="checkbox" name="objectifs" value="maintien_sante"> Maintien du niveau de santé</label>
       </form>
-      <button onclick="goToStep(1)">Retour</button>
-      <button onclick="goToStep(3)">Étape suivante</button>
+      <button id="btnStep2Back">Retour</button>
+      <button id="btnStep2Next">Étape suivante</button>
     </div>
 
     <!-- Étape 3 : Régimes -->
@@ -179,8 +188,8 @@
         <label><input type="checkbox" name="regimes" value="sans_oeuf"> Sans œuf</label>
         <label><input type="checkbox" name="regimes" value="sans_lait"> Sans produit laitier</label>
       </form>
-      <button onclick="goToStep(2)">Retour</button>
-      <button onclick="goToStep(4)">Étape suivante</button>
+      <button id="btnStep3Back">Retour</button>
+      <button id="btnStep3Next">Étape suivante</button>
     </div>
 
     <!-- Étape 4 : Pathologies -->
@@ -195,49 +204,84 @@
         <p>Autres infos (bilan sanguin...) :</p>
         <textarea name="autresInfos" rows="3" placeholder="Ex: cholestérol élevé, anémie..."></textarea>
       </form>
-      <button onclick="goToStep(3)">Retour</button>
-      <button onclick="goToStep(5)">Étape suivante</button>
+      <button id="btnStep4Back">Retour</button>
+      <button id="btnStep4Next">Étape suivante</button>
     </div>
 
     <!-- Étape 5 : Récap -->
     <div class="wizard-step" id="step5">
       <h3>Étape 5 : Récapitulatif</h3>
       <div id="recapContainer"></div>
-      <button onclick="goToStep(4)">Retour</button>
-      <button onclick="submitAllData()">Valider & Enregistrer</button>
+      <button id="btnStep5Back">Retour</button>
+      <button id="btnValidateAll">Valider & Enregistrer</button>
     </div>
-
   </div>
 
   <footer>
     © 2025 - Ma P'tite Salle
   </footer>
 
+  <!-- Script standard (non-module) -->
   <script>
-    // On stocke les données de toutes les étapes dans un objet
+    // Contiendra toutes les datas
     const collectedData = {};
 
-    function goToStep(stepNumber) {
-      // Masquer tous les .wizard-step
+    // getElement
+    function el(id) { return document.getElementById(id); }
+
+    // Montre une étape, masque les autres
+    function showStep(step) {
       document.querySelectorAll('.wizard-step').forEach(div => {
         div.classList.remove('active');
       });
-      // Afficher celui demandé
-      const stepDiv = document.getElementById('step' + stepNumber);
-      if (stepDiv) {
-        stepDiv.classList.add('active');
-      }
+      const stepDiv = el('step' + step);
+      if (stepDiv) stepDiv.classList.add('active');
 
-      // Si on va vers step5 (récap), on construit le recap
-      if (stepNumber === 5) {
-        buildRecap();
-      }
+      // Si c'est step5 -> on construit le récap
+      if (step === 5) buildRecap();
+    }
+
+    // Collect step1
+    function collectStep1() {
+      const f = el('formStep1');
+      collectedData.forceHaut = f.forceHaut.value;
+      collectedData.forceMilieu = f.forceMilieu.value;
+      collectedData.forceBas = f.forceBas.value;
+      collectedData.flexCou = f.flexCou.value;
+      collectedData.flexEpaules = f.flexEpaules.value;
+      collectedData.flexLombaires = f.flexLombaires.value;
+      collectedData.flexIschios = f.flexIschios.value;
+      collectedData.flexHanches = f.flexHanches.value;
+      collectedData.poids = f.poids.value;
+      collectedData.masseGrasse = f.masseGrasse.value;
+      collectedData.masseMuscu = f.masseMuscu.value;
+      collectedData.ageMetabo = f.ageMetabo.value;
+      collectedData.vo2max = f.vo2max.value;
+      collectedData.ageCardio = f.ageCardio.value;
+    }
+    // Collect step2
+    function collectStep2() {
+      const f = el('formStep2');
+      const checked = f.querySelectorAll('input[name="objectifs"]:checked');
+      collectedData.objectifs = [...checked].map(c => c.value);
+    }
+    // Collect step3
+    function collectStep3() {
+      const f = el('formStep3');
+      const checked = f.querySelectorAll('input[name="regimes"]:checked');
+      collectedData.regimes = [...checked].map(c => c.value);
+    }
+    // Collect step4
+    function collectStep4() {
+      const f = el('formStep4');
+      const checked = f.querySelectorAll('input[name="pathologies"]:checked');
+      collectedData.pathologies = [...checked].map(c => c.value);
+      collectedData.autresInfos = f.autresInfos.value;
     }
 
     function buildRecap() {
-      // Récupérer tout ce qu'on a collecté pour un affichage
-      const recapDiv = document.getElementById('recapContainer');
-      recapDiv.innerHTML = `
+      const recap = el('recapContainer');
+      recap.innerHTML = `
         <p><strong>Données eGym :</strong></p>
         <ul>
           <li>Force : Haut(${collectedData.forceHaut}), Milieu(${collectedData.forceMilieu}), Bas(${collectedData.forceBas})</li>
@@ -253,66 +297,45 @@
       `;
     }
 
-    // collectDataFromStep() pour chaque étape
-    // On l'appelle juste avant de passer à l'étape suivante
+    // Navigation
+    document.addEventListener('DOMContentLoaded', () => {
+      // Step1 -> next
+      el('btnStep1Next').addEventListener('click', () => {
+        collectStep1();
+        showStep(2);
+      });
+      // Step2 -> back/next
+      el('btnStep2Back').addEventListener('click', () => {
+        showStep(1);
+      });
+      el('btnStep2Next').addEventListener('click', () => {
+        collectStep2();
+        showStep(3);
+      });
+      // Step3 -> back/next
+      el('btnStep3Back').addEventListener('click', () => {
+        showStep(2);
+      });
+      el('btnStep3Next').addEventListener('click', () => {
+        collectStep3();
+        showStep(4);
+      });
+      // Step4 -> back/next
+      el('btnStep4Back').addEventListener('click', () => {
+        showStep(3);
+      });
+      el('btnStep4Next').addEventListener('click', () => {
+        collectStep4();
+        showStep(5);
+      });
+      // Step5 -> back / valider
+      el('btnStep5Back').addEventListener('click', () => {
+        showStep(4);
+      });
+      el('btnValidateAll').addEventListener('click', submitAllData);
+    });
 
-    function collectStep1() {
-      const form1 = document.getElementById('formStep1');
-      // Récupérer tous les champs
-      collectedData.forceHaut = form1.forceHaut.value;
-      collectedData.forceMilieu = form1.forceMilieu.value;
-      collectedData.forceBas = form1.forceBas.value;
-      collectedData.flexCou = form1.flexCou.value;
-      collectedData.flexEpaules = form1.flexEpaules.value;
-      collectedData.flexLombaires = form1.flexLombaires.value;
-      collectedData.flexIschios = form1.flexIschios.value;
-      collectedData.flexHanches = form1.flexHanches.value;
-      collectedData.poids = form1.poids.value;
-      collectedData.masseGrasse = form1.masseGrasse.value;
-      collectedData.masseMuscu = form1.masseMuscu.value;
-      collectedData.ageMetabo = form1.ageMetabo.value;
-      collectedData.vo2max = form1.vo2max.value;
-      collectedData.ageCardio = form1.ageCardio.value;
-    }
-
-    function collectStep2() {
-      const form2 = document.getElementById('formStep2');
-      const checked = form2.querySelectorAll('input[name="objectifs"]:checked');
-      collectedData.objectifs = [...checked].map(c => c.value);
-    }
-
-    function collectStep3() {
-      const form3 = document.getElementById('formStep3');
-      const checked = form3.querySelectorAll('input[name="regimes"]:checked');
-      collectedData.regimes = [...checked].map(c => c.value);
-    }
-
-    function collectStep4() {
-      const form4 = document.getElementById('formStep4');
-      const checked = form4.querySelectorAll('input[name="pathologies"]:checked');
-      collectedData.pathologies = [...checked].map(c => c.value);
-      collectedData.autresInfos = form4.autresInfos.value;
-    }
-
-    // On modifie goToStep() pour collecter avant de passer
-    // On stocke l'ancien goToStep dans myOldGoToStep si besoin ?
-
-    // On surcharge goToStep pour qu'il appelle la collecte
-    const originalGoToStep = goToStep; 
-    goToStep = function(stepNumber) {
-      // Collecte des champs avant de quitter l'étape courante
-      const currentActive = document.querySelector('.wizard-step.active');
-      if (currentActive) {
-        if (currentActive.id === 'step1') collectStep1();
-        if (currentActive.id === 'step2') collectStep2();
-        if (currentActive.id === 'step3') collectStep3();
-        if (currentActive.id === 'step4') collectStep4();
-      }
-      // Puis on appelle l'original
-      originalGoToStep(stepNumber);
-    }
-
-    // A la fin, on envoie le tout
+    // Soumission finale
     async function submitAllData() {
       // Vérifier user Netlify Identity
       const user = window.netlifyIdentity && window.netlifyIdentity.currentUser();
@@ -322,7 +345,6 @@
       }
       const token = await user.jwt();
 
-      // On peut faire un fetch sur /saveData
       try {
         const res = await fetch('/.netlify/functions/saveData', {
           method: 'POST',
@@ -339,8 +361,11 @@
         }
         alert("Données enregistrées avec succès, docId = " + json.docId);
         console.log("Document Firestore créé:", json.docId);
-
-        // Ensuite, on pourrait rediriger vers un dashboard, ou reset le wizard...
       } catch (err) {
         console.error("Erreur fetch /saveData:", err);
-        alert("Erreur
+        alert("Erreur sur le fetch /saveData");
+      }
+    }
+  </script>
+</body>
+</html>
